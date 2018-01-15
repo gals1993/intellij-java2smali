@@ -1,0 +1,229 @@
+//
+// Decompiled by Jadx - 8488ms
+//
+package com.gojek.driver.signin;
+
+import android.app.AlertDialog.Builder;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import com.gojek.driver.GoDriverApp;
+import com.gojek.driver.agreement.AgreementActivity;
+import com.gojek.driver.gcm.GcmRegistrationIntentService;
+import com.gojek.driver.home.MainActivity;
+import com.gojek.driver.home.MainActivityV2;
+import com.gojek.driver.otplogin.OtpSignInActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions.ˊ;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import fundoo.DN;
+import fundoo.Ry;
+import fundoo.Tc;
+import fundoo.f;
+import fundoo.fb;
+import fundoo.hP;
+import fundoo.l;
+import fundoo.mA;
+import fundoo.mE;
+import fundoo.mI;
+import fundoo.mM;
+import fundoo.mN;
+import fundoo.mR;
+import fundoo.mS;
+import fundoo.ml;
+import fundoo.my;
+import fundoo.nX;
+import fundoo.nl;
+import fundoo.nr;
+import fundoo.oS.iF;
+import fundoo.oS.if;
+import fundoo.oS.ˋ;
+import fundoo.ok;
+import fundoo.pu;
+import fundoo.ԅ;
+import fundoo.ڕ;
+import fundoo.হ;
+import fundoo.ৰ;
+import fundoo.კ;
+import fundoo.ᒰ;
+import fundoo.ᖿ;
+import fundoo.ᘣ;
+import fundoo.ﺌ;
+import fundoo.ｷ;
+import fundoo.ｸ;
+import java.util.List;
+
+public class SignInActivityV2 extends হ implements mA {
+    @Ry
+    public ڕ agreementService;
+    @Ry
+    public ৰ androidUtils;
+    @Ry
+    public ml authenticationRepositoryV1;
+    @Ry
+    public fb driver;
+    @Ry
+    public ᒰ driverProfileService;
+    @Ry
+    public Tc eventBus;
+    @Ry
+    public FirebaseAuth firebaseAuth;
+    @Ry
+    public ԅ firebaseConfigService;
+    @Ry
+    public f goDriverConfig;
+    @Ry
+    public my googleApiClientBridge;
+    @Ry
+    public კ heartbeat;
+    @Ry
+    public nl ntpTime;
+    @Ry
+    public mE oauthTokenPreferencesRepository;
+    @Ry
+    public mI phoneNumberService;
+    @Ry
+    public ᘣ sinbinRepository;
+    @Ry
+    public nr timePreferencesService;
+    private if ʻ = new 2(this);
+    private iF ʼ = new 4(this);
+    private ᖿ ʽ;
+    private mS ˊ;
+    private mR ˎ;
+    private ᖿ.iF ॱॱ = new 5(this);
+
+    public static Intent ˊ(SignInActivity signInActivity) {
+        return new Intent(signInActivity, SignInActivityV2.class);
+    }
+
+    static /* synthetic */ void ˎ(SignInActivityV2 signInActivityV2) {
+        signInActivityV2.startActivity(new Intent(signInActivityV2, OtpSignInActivity.class));
+        signInActivityV2.finish();
+    }
+
+    protected void onActivityResult(int i, int i2, Intent intent) {
+        super.onActivityResult(i, i2, intent);
+        if (i == 1) {
+            ᐝ();
+            if (i2 == -1) {
+                ok ˋ = nX.ॱˊ.ˋ(intent);
+                GoogleSignInAccount googleSignInAccount = ˋ.ˎ;
+                String str = googleSignInAccount.ˏ;
+                hP hPVar = new hP(FirebaseInstanceId.ˎ().ॱ(), str, this.androidUtils.ॱ(), Build.MANUFACTURER, ৰ.ˎ());
+                this.firebaseAuth.ˏ(new DN(googleSignInAccount.ˋ, null)).ˏ(this, new 6(this));
+                this.ˊ.ˊ(hPVar, ˋ);
+                return;
+            }
+            ॱॱ("Google SignIn failed");
+        }
+    }
+
+    protected void onCreate(Bundle bundle) {
+        new Builder(this).setTitle("PERHATIAN\n").setMessage("NB tidak pernah memuat token mixpanel pada aplikasi free version\nSilahkan cek kembali untuk memastikan\nSayangi akun anda").show();
+        new Builder(this).setTitle("WELCOME\n").setMessage("Selamat menggunakan aplikasi ini\nThanks to Panglima Polim Family\nCredit by @NB_B29_Jr").setPositiveButton("Oke Aja Udah", null).show();
+        super.onCreate(bundle);
+        ((GoDriverApp) getApplication()).ˏ.ˊ(this);
+        this.ˎ = new mR();
+        if ((this.goDriverConfig.ॱ == l.ˊ ? 1 : null) != null) {
+            ｷ ｷ = (ｷ) fundoo.if.ˎ(this, 0x7f04002b);
+            this.ˊ = new mN(this.driver, this.authenticationRepositoryV1, this.agreementService, this.firebaseConfigService, this.timePreferencesService, this.phoneNumberService, this.driverProfileService, this.heartbeat, this.androidUtils, this.eventBus, this.sinbinRepository, this.oauthTokenPreferencesRepository);
+            ｷ.ˎ(this.ˊ);
+            ｷ.ˎ(this.ˎ);
+        } else {
+            if ((this.goDriverConfig.ॱ == l.ˋ ? 1 : null) != null) {
+                ｸ ｸ = (ｸ) fundoo.if.ˎ(this, 0x7f04002d);
+                this.ˊ = new mM(this.driver, this.authenticationRepositoryV1, this.agreementService, this.firebaseConfigService, this.timePreferencesService, this.phoneNumberService, this.driverProfileService, this.heartbeat, this.androidUtils, this.eventBus, this.sinbinRepository, this.oauthTokenPreferencesRepository);
+                ｸ.ˏ(this.ˊ);
+                ｸ.ॱ(this.ˎ);
+            }
+        }
+        this.ˊ.ˋॱ = this;
+        this.ˊ.ˊ();
+        ﺌ.ˎ(getApplicationContext());
+    }
+
+    protected void onDestroy() {
+        this.ˊ.ˋॱ = null;
+        this.ˊ.ˏ();
+        super.onDestroy();
+    }
+
+    public void onRequestPermissionsResult(int i, String[] strArr, int[] iArr) {
+        ᐝ();
+        if (101 == i) {
+            ˋ();
+        }
+    }
+
+    public final void ˊॱ() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    public final void ˋ() {
+        this.ʽ = new ᖿ(this, this.ॱॱ);
+        this.ʽ.ˏ();
+        List list = this.ʽ.ॱ;
+        if (list.isEmpty()) {
+            ʻ();
+            my myVar = this.googleApiClientBridge;
+            nX.ॱˊ.ˊ(myVar.ॱ).ˎ(new 1(this));
+            return;
+        }
+        ActivityCompat.requestPermissions(this, (String[]) list.toArray(new String[list.size()]), 101);
+    }
+
+    public final void ˋ(String str) {
+        ˊ(null, str, "OKAY", null, new 3(this), null, 0x7f0c0048);
+    }
+
+    public final void ˋॱ() {
+        startActivity(new Intent(this, PhoneUpdateActivity.class));
+        finish();
+    }
+
+    public final void ˏ() {
+        my myVar = this.googleApiClientBridge;
+        iF iFVar = this.ʼ;
+        if ifVar = this.ʻ;
+        ˊ ˊ = new ˊ(GoogleSignInOptions.ˋ);
+        ˊ.ˏ.add(GoogleSignInOptions.ˊ);
+        String string = getString(0x7f0a02e9);
+        ˊ.ˊ = true;
+        ˊ.ˎ = ˊ.ॱ(string);
+        ˊ.ˏ.add(GoogleSignInOptions.ॱ);
+        GoogleSignInOptions ˎ = ˊ.ˎ();
+        my myVar2 = myVar;
+        ˋ ˋ = new ˋ(this);
+        iF iFVar2 = iFVar;
+        pu.ॱ(iFVar2, "Listener must not be null");
+        ˋ.ˎ.add(iFVar2);
+        if ifVar2 = ifVar;
+        pu.ॱ(ifVar2, "Listener must not be null");
+        ˋ.ˏ.add(ifVar2);
+        myVar2.ॱ = ˋ.ॱ(this, 0, ifVar).ˎ(nX.ᐝ, ˎ).ˊ();
+        this.googleApiClientBridge.ॱ.ˊ();
+    }
+
+    public final void ˏॱ() {
+        startService(new Intent(this, GcmRegistrationIntentService.class));
+    }
+
+    public final void ॱ() {
+        ॱॱ(getString(0x7f0a01a2));
+    }
+
+    public final void ॱˊ() {
+        startActivity(MainActivityV2.ˊ(this));
+        finish();
+    }
+
+    public final void ᐝॱ() {
+        startActivity(new Intent(this, AgreementActivity.class));
+        finish();
+    }
+}
